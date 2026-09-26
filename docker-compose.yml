@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+
+    container_name: geotales-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: geotales
+      POSTGRES_USER: geotales
+      POSTGRES_PASSWORD: geotales_dev_password
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - geotales_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  geotales_postgres_data:
