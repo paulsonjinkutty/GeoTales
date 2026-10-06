@@ -2,12 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import  UserResponse
 from app.services.user_service import (
-    create_new_user,
+    
     get_all_users,
     get_user,
 )
+
+from app.api.dependencies import get_current_user
+from app.models.user import User
 
 router = APIRouter(
     prefix="/users",
@@ -38,23 +41,8 @@ def read_user(
     return user
 
 
-@router.post(
-    "",
-    response_model=UserResponse,
-    status_code=status.HTTP_201_CREATED,
-)
-def create_user(
-    user_data: UserCreate,
-    db: Session = Depends(get_db),
+@router.get("/me",response_model=UserResponse,)
+def read_my_profile(
+    current_user: User = Depends(get_current_user),
 ):
-    try:
-        return create_new_user(
-            db=db,
-            name=user_data.name,
-            email=user_data.email,
-        )
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=str(exc),
-        ) from exc
+    return current_user
