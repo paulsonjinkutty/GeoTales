@@ -11,3 +11,4 @@ httpx
 pwdlib[argon2]
 PyJWT
 python-multipart
+geoalchemy2
