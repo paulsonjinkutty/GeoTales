@@ -1,69 +1,250 @@
-import Image from "next/image";
+import Link from "next/link";
+const navigation = [
+  { icon: "⌖", label: "Explorer", active: true },
+  { icon: "⌁", label: "My journeys", active: false },
+  { icon: "◇", label: "Achievements", active: false },
+];
+
+const landmarks = [
+  {
+    number: "01",
+    name: "Historic landmarks",
+    description: "Discover places with stories to tell",
+    color: "amber",
+  },
+  {
+    number: "02",
+    name: "Hidden destinations",
+    description: "Explore beyond the usual routes",
+    color: "green",
+  },
+  {
+    number: "03",
+    name: "Cultural experiences",
+    description: "Connect with local heritage",
+    color: "blue",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="app-shell">
+      <aside className="sidebar">
+        <Link className="brand" href="/" aria-label="GeoTales home">
+          <span className="brand-mark">G</span>
+          <span>
+            <strong>GeoTales</strong>
+            <small>EXPLORE WITH PURPOSE</small>
+          </span>
+        </Link>
+
+        <div className="sidebar-label">WORKSPACE</div>
+        <nav className="navigation" aria-label="Main navigation">
+          {navigation.map((item) => (
+            <Link
+              href="#"
+              key={item.label}
+              className={`nav-item ${item.active ? "active" : ""}`}
+              aria-current={item.active ? "page" : undefined}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <span className="nav-icon">{item.icon}</span>
+              {item.label}
+              {item.active && <span className="active-dot" />}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="sidebar-bottom">
+          <div className="profile-avatar">G</div>
+          <div className="profile-copy">
+            <strong>Guest explorer</strong>
+            <span>Discover your world</span>
+          </div>
+          <span className="status-dot" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </aside>
+
+      <section className="workspace">
+        <header className="topbar">
+          <div className="breadcrumbs">
+            <span>Workspace</span>
+            <span className="crumb-separator">/</span>
+            <strong>Explorer</strong>
+          </div>
+          <div className="topbar-right">
+            <span className="connection-indicator">
+              <span className="status-dot" />
+              LOCAL PREVIEW
+            </span>
+            <button className="icon-button" aria-label="Notifications">
+              ♧
+            </button>
+            <div className="topbar-avatar">G</div>
+          </div>
+        </header>
+
+        <div className="page-content">
+          <section className="welcome-row">
+            <div>
+              <div className="eyebrow">
+                <span className="eyebrow-line" />
+                YOUR NEXT DISCOVERY STARTS HERE
+              </div>
+              <h1>Every place has a <span>story.</span></h1>
+              <p className="welcome-copy">
+                Explore landmarks, uncover local history, and let your
+                journey become more than just a destination.
+              </p>
+            </div>
+            <div className="date-chip">
+              <span className="date-icon">◷</span>
+              Spatial discovery
+            </div>
+          </section>
+
+          <section className="search-panel">
+            <span className="search-icon">⌕</span>
+            <div className="search-copy">
+              <strong>Where would you like to explore?</strong>
+              <span>Search for a landmark or destination</span>
+            </div>
+            <button className="search-button" disabled>
+              Search destinations <span>↗</span>
+            </button>
+          </section>
+
+          <section className="explorer-grid">
+            <div className="map-column">
+              <div className="section-heading">
+                <div>
+                  <span className="section-kicker">YOUR WORLD, REIMAGINED</span>
+                  <h2>Explore the map</h2>
+                </div>
+                <span className="preview-pill">MAP PREVIEW</span>
+              </div>
+
+              <div className="map-canvas">
+                <div className="map-grid" />
+                <div className="map-contour contour-one" />
+                <div className="map-contour contour-two" />
+                <div className="map-contour contour-three" />
+
+                <div className="map-river" />
+
+                <div className="map-road road-one" />
+                <div className="map-road road-two" />
+                <div className="map-road road-three" />
+
+                <div className="map-label label-north">N</div>
+                <div className="map-label label-park">GREEN DISTRICT</div>
+                <div className="map-label label-river">RIVER WALK</div>
+                <div className="map-label label-oldtown">OLD TOWN</div>
+
+                <div className="map-pin pin-one"><span>1</span></div>
+                <div className="map-pin pin-two"><span>2</span></div>
+                <div className="map-pin pin-three"><span>3</span></div>
+
+                <div className="map-legend">
+                  <span className="legend-dot" />
+                  Interactive map integration is next
+                </div>
+
+                <div className="map-controls">
+                  <button aria-label="Zoom in" disabled>+</button>
+                  <button aria-label="Zoom out" disabled>−</button>
+                </div>
+              </div>
+
+              <div className="map-footer">
+                <span><span className="legend-dot" /> Landmark discovery</span>
+                <span>GIS WORKSPACE <span className="footer-coordinates">· 0.0000°, 0.0000°</span></span>
+              </div>
+            </div>
+
+            <aside className="discovery-column">
+              <div className="section-heading">
+                <div>
+                  <span className="section-kicker">START EXPLORING</span>
+                  <h2>Discover more</h2>
+                </div>
+                <button className="text-button" disabled>View all ↗</button>
+              </div>
+
+              <div className="discovery-list">
+                {landmarks.map((item) => (
+                  <article className="discovery-card" key={item.number}>
+                    <div className={`discovery-art ${item.color}`}>
+                      <span>{item.number}</span>
+                      <div className="art-orbit" />
+                      <div className="art-center">✳</div>
+                    </div>
+                    <div className="discovery-copy">
+                      <strong>{item.name}</strong>
+                      <p>{item.description}</p>
+                      <span className="coming-soon">Ready to connect</span>
+                    </div>
+                    <span className="card-arrow">↗</span>
+                  </article>
+                ))}
+              </div>
+
+              <div className="insight-card">
+                <div className="insight-icon">✳</div>
+                <div>
+                  <strong>Travel beyond the map.</strong>
+                  <p>Discover the stories behind the places you visit.</p>
+                </div>
+              </div>
+            </aside>
+          </section>
+
+          <section className="ai-panel">
+            <div className="ai-heading">
+              <div className="ai-symbol">✳</div>
+              <div>
+                <span className="section-kicker">YOUR TRAVEL COMPANION</span>
+                <h2>Ask GeoTales AI</h2>
+                <p>Curious about a place? Start a conversation.</p>
+              </div>
+              <span className="ai-status">PROVIDER CONNECTED</span>
+            </div>
+
+            <div className="ai-message">
+              <span className="ai-message-icon">G</span>
+              <div>
+                <strong>Your journey, with more meaning.</strong>
+                <p>
+                  Once connected, I can answer tourism questions and
+                  narrate places using the information available to GeoTales.
+                </p>
+              </div>
+            </div>
+
+            <form className="ai-input-row">
+              <label className="sr-only" htmlFor="ai-question">
+                Ask GeoTales AI a question
+              </label>
+              <input
+                id="ai-question"
+                type="text"
+                placeholder="Ask about a landmark, its history, or your journey..."
+                disabled
+              />
+              <button type="button" disabled>
+                Ask GeoTales <span>↗</span>
+              </button>
+            </form>
+            <p className="ai-note">
+              UI PREVIEW · Live AI interaction will be enabled in the API integration step.
+            </p>
+          </section>
+
+          <footer className="page-footer">
+            <span>GEOTALES <span className="footer-muted">· SMART CULTURAL EXPLORATION</span></span>
+            <span>Built to discover, designed to understand.</span>
+          </footer>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
