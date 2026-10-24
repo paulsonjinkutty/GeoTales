@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.models.journey import Journey
 from app.repositories import journey_repository
+from app.services.achievement_service import award_eligible_achievements
 
 
 class JourneyStateError(Exception):
@@ -131,6 +132,15 @@ def finish_journey(
 
     try:
         journey.ended_at = datetime.now(timezone.utc)
+
+        # Make the completed journey visible to the eligibility queries.
+        db.flush()
+
+        # Awards join the same transaction as journey completion.
+        award_eligible_achievements(
+            db=db,
+            user_id=journey.user_id,
+        )
 
         db.commit()
         db.refresh(journey)

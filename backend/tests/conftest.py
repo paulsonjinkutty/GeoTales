@@ -9,6 +9,7 @@ from app.core.config import settings
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app as fastapi_app
+from app.models.achievements import Achievement
 
 # Importing the models registers their tables with Base.metadata.
 # This allows SQLAlchemy to create all GeoTales tables for testing.
@@ -58,6 +59,7 @@ def isolate_test_database() -> Generator[None, None, None]:
     The schema reset applies only to geotales_test, never to the
     regular GeoTales development database.
     """
+
     with test_engine.begin() as connection:
         connection.execute(
             text("CREATE EXTENSION IF NOT EXISTS postgis")
@@ -65,6 +67,33 @@ def isolate_test_database() -> Generator[None, None, None]:
 
     Base.metadata.drop_all(bind=test_engine)
     Base.metadata.create_all(bind=test_engine)
+    with TestingSessionLocal() as seed_db:
+            seed_db.add_all(
+                [
+                    Achievement(
+                        name="First Journey",
+                        description="Complete your first journey.",
+                        points=10,
+                    ),
+                    Achievement(
+                        name="Trailblazer",
+                        description="Complete five journeys.",
+                        points=30,
+                    ),
+                    Achievement(
+                        name="Route Collector",
+                        description="Record ten GPS points across your journeys.",
+                        points=20,
+                    ),
+                    Achievement(
+                        name="Cartographer",
+                        description="Record one hundred GPS points across your journeys.",
+                        points=50,
+                    ),
+                ]
+        )
+            seed_db.commit()
+
 
     fastapi_app.dependency_overrides[get_db] = override_get_db
 
@@ -73,3 +102,13 @@ def isolate_test_database() -> Generator[None, None, None]:
     finally:
         fastapi_app.dependency_overrides.pop(get_db, None)
         Base.metadata.drop_all(bind=test_engine)
+
+@pytest.fixture
+def db_session() -> Generator[Session, None, None]:
+    """Provide a session connected to the isolated test database."""
+    db = TestingSessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
