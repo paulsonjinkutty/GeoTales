@@ -1,0 +1,371 @@
+/* GeoTales route planner and place search — imported by page.tsx */
+
+/* Header search: use the same real place search as the route planner. */
+.gt-global-search {
+  position: relative;
+  z-index: 1600;
+  display: flex;
+  min-width: 280px;
+  max-width: 520px;
+  flex: 1 1 420px;
+  align-items: center;
+  gap: 9px;
+  min-height: 46px;
+  overflow: visible;
+}
+
+.gt-global-search > span {
+  flex: 0 0 auto;
+  color: #9a6a36;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.gt-global-search > kbd {
+  flex: 0 0 auto;
+  padding: 5px 7px;
+  border: 1px solid #e0d8c5;
+  border-radius: 6px;
+  background: #fffdf8;
+  color: #8d9385;
+  font-size: 8px;
+  letter-spacing: .07em;
+}
+
+.gt-location-field {
+  position: relative;
+  z-index: 40;
+  min-width: 0;
+  width: 100%;
+}
+
+.gt-location-label {
+  display: block;
+  margin: 0 0 7px;
+  color: #7d866f;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .15em;
+}
+
+.gt-location-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.gt-location-input-wrap input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 0 42px 0 14px;
+  border: 1px solid #ded5c2;
+  border-radius: 10px;
+  outline: none;
+  background: #fffefa;
+  color: #21392d;
+  font: inherit;
+  font-size: 13px;
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.gt-location-input-wrap input::placeholder { color: #9a9b8e; }
+.gt-location-input-wrap input:focus {
+  border-color: #63846c;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgb(92 127 99 / 13%);
+}
+.gt-location-input-wrap input:disabled { cursor: not-allowed; opacity: .62; }
+
+.gt-location-loading {
+  position: absolute;
+  top: 16px;
+  right: 15px;
+  width: 17px;
+  height: 17px;
+  border: 2px solid #e1e6dc;
+  border-top-color: #315b43;
+  border-radius: 50%;
+  animation: gt-location-spin .7s linear infinite;
+}
+
+@keyframes gt-location-spin { to { transform: rotate(360deg); } }
+
+.gt-location-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  z-index: 2500;
+  max-height: 310px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid #e1d8c6;
+  border-radius: 12px;
+  background: #fffefa;
+  box-shadow: 0 17px 38px rgb(35 47 36 / 18%);
+}
+
+.gt-location-suggestion {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 0;
+  border-bottom: 1px solid #eee8dc;
+  background: transparent;
+  color: #263b2f;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: background .14s ease;
+}
+.gt-location-suggestion:last-of-type { border-bottom: 0; }
+.gt-location-suggestion:hover,
+.gt-location-suggestion:focus-visible { outline: none; background: #f1f4ec; }
+.gt-location-suggestion-pin {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border-radius: 9px;
+  background: #edf2e8;
+  color: #52745a;
+  font-size: 17px;
+}
+.gt-location-suggestion-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+.gt-location-suggestion-copy strong {
+  overflow: hidden;
+  color: #263b2f;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gt-location-suggestion-copy small {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #899083;
+  font-size: 10px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.gt-location-empty,
+.gt-location-provider-note {
+  margin: 0;
+  padding: 13px 15px;
+  color: #788176;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.gt-location-provider-note {
+  border-top: 1px solid #eee8dc;
+  color: #9a835e;
+  font-size: 10px;
+}
+
+/* Compact header version: visible and useful without competing with the page. */
+.gt-location-field--compact {
+  flex: 1 1 auto;
+  width: auto;
+}
+.gt-location-field--compact .gt-location-label { display: none; }
+.gt-location-field--compact .gt-location-input-wrap input {
+  min-height: 42px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #243a2e;
+  font-size: 12px;
+}
+.gt-location-field--compact .gt-location-input-wrap input:focus {
+  border: 0;
+  box-shadow: none;
+}
+.gt-location-field--compact .gt-location-suggestions {
+  top: calc(100% + 12px);
+  left: -33px;
+  right: -35px;
+  min-width: min(480px, 82vw);
+}
+
+/* Route planner: spacious two-column layout with a distinct action area. */
+.gt-route-planner {
+  position: relative;
+  z-index: 80;
+  margin: 15px 0 17px;
+  padding: 19px 21px 14px;
+  border: 1px solid #e2d8c4;
+  border-radius: 16px;
+  background: rgb(255 253 247 / 98%);
+  box-shadow: 0 8px 24px rgb(39 56 42 / 6%);
+}
+.gt-route-planner-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 15px;
+}
+.gt-route-kicker {
+  color: #a4773f;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: .16em;
+}
+.gt-route-planner-heading h3 {
+  margin: 5px 0 3px;
+  color: #20392d;
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -.45px;
+}
+.gt-route-planner-heading p {
+  margin: 0;
+  color: #818879;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.gt-route-step {
+  padding: 6px 9px;
+  border: 1px solid #e8dfcf;
+  border-radius: 7px;
+  color: #8a7758;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+.gt-route-step i { color: #c49a5b; font-style: normal; }
+.gt-route-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 15px;
+}
+.gt-route-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+.gt-route-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gt-use-location {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid #dbe2d5;
+  border-radius: 9px;
+  background: #f0f4eb;
+  color: #315b43;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.gt-use-location:hover:not(:disabled) { background: #e7efdf; }
+.gt-use-location:disabled { cursor: not-allowed; opacity: .55; }
+.gt-route-submit {
+  min-height: 48px;
+  padding: 0 17px;
+  border-radius: 9px;
+  white-space: nowrap;
+}
+.gt-place-attribution {
+  margin: 10px 0 0;
+  color: #a09a8c;
+  font-size: 9px;
+}
+.gt-route-planner-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 13px;
+  padding-top: 12px;
+  border-top: 1px solid #e8e0d2;
+}
+.gt-route-planner-summary > span { display: flex; flex-direction: column; gap: 3px; }
+.gt-route-planner-summary strong { color: #203a2d; font-size: 15px; }
+.gt-route-planner-summary small { color: #8a8d80; font-size: 10px; }
+.gt-route-planner-summary .gt-route-planner-destination {
+  flex: 1;
+  min-width: 140px;
+  overflow: hidden;
+  color: #737c70;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.gt-route-tracking-note { flex-basis: 100%; color: #8a8d80; font-size: 10px; }
+
+@media (max-width: 1100px) {
+  .gt-route-fields { grid-template-columns: 1fr; }
+  .gt-route-actions { justify-content: flex-end; }
+}
+
+@media (max-width: 720px) {
+  .gt-global-search { order: 3; min-width: 100%; max-width: none; flex-basis: 100%; }
+  .gt-route-planner { padding: 15px; }
+  .gt-route-inputs { grid-template-columns: 1fr; gap: 10px; }
+  .gt-route-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .gt-use-location, .gt-route-submit { width: 100%; }
+  .gt-route-planner-summary { gap: 11px; }
+  .gt-route-planner-summary .gt-route-planner-destination { flex-basis: 100%; }
+}
+
+@media (max-width: 420px) {
+  .gt-route-actions { grid-template-columns: 1fr; }
+  .gt-route-planner-heading { margin-bottom: 12px; }
+  .gt-route-step { display: none; }
+}
+
+
+/* GeoTales brand artwork */
+.gt-sidebar .gt-brand {
+  display: block;
+  width: 100%;
+  margin: 0 0 42px;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.gt-sidebar .gt-brand-image {
+  display: block;
+  width: min(100%, 190px);
+  height: auto;
+  object-fit: contain;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 9px;
+  box-shadow: 0 8px 22px rgb(4 18 13 / 24%);
+}
+
+@media (max-width: 780px) {
+  .gt-sidebar .gt-brand {
+    width: fit-content;
+    margin: 0 auto 12px 0;
+  }
+
+  .gt-sidebar .gt-brand-image {
+    width: 126px;
+  }
+}
